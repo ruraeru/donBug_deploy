@@ -25,6 +25,8 @@ services:
       KAKAO_CLIENT_SECRET: ${KAKAO_CLIENT_SECRET:-}
       KAKAO_REDIRECT_URI: https://${DOMAIN:-donbug.ruraeru.xyz}/api/auth/kakao/callback
       FRONTEND_ORIGIN: https://${DOMAIN:-donbug.ruraeru.xyz}
+      # 카카오 웹 로그인 콜백이 토큰을 들고 돌아갈 웹 주소
+      FRONTEND_URL: https://${DOMAIN:-donbug.ruraeru.xyz}
       # 운영: "test_token" 개발 로그인 우회를 끈다
       DEV_LOGIN_ENABLED: ${DEV_LOGIN_ENABLED:-false}
     depends_on:

@@ -12,7 +12,8 @@ WORKDIR /app
 COPY donBug_FE/pubspec.yaml donBug_FE/pubspec.lock ./
 RUN flutter pub get
 COPY donBug_FE/ ./
-RUN flutter build web --release
+# USE_API=true: 서버 연동 모드 (카카오 로그인 + /api 호출). 같은 origin 이라 API_BASE 는 비워 둔다.
+RUN flutter build web --release --dart-define=USE_API=true
 
 FROM caddy:2.10-alpine
 COPY Caddyfile /etc/caddy/Caddyfile
