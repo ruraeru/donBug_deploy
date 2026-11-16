@@ -5,9 +5,10 @@
 -- 지우기: scripts/seed-test-staff.sql 맨 아래 주석 참고.
 
 -- mysql 클라이언트 기본 문자셋이 latin1 이라 한글이 깨진다.
-SET NAMES utf8mb4;
+-- 테이블 정렬 규칙(utf8mb4_unicode_ci)과 맞춘다.
+SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-SET @sid := (SELECT store_id FROM store WHERE code = @code);
+SET @sid := (SELECT store_id FROM store WHERE code = CONVERT(@code USING utf8mb4) COLLATE utf8mb4_unicode_ci);
 SELECT IF(@sid IS NULL, CONCAT('매장 코드를 찾을 수 없어요: ', @code), CONCAT('매장 id ', @sid)) AS info;
 
 -- 매장 파트를 시작 시각 순으로 (기본: 오픈 · 미들 · 마감)
