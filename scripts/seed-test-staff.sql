@@ -4,6 +4,9 @@
 --     | sudo docker compose exec -T db sh -c 'mysql -uroot -p"$MYSQL_ROOT_PASSWORD" moneybug'
 -- 지우기: scripts/seed-test-staff.sql 맨 아래 주석 참고.
 
+-- mysql 클라이언트 기본 문자셋이 latin1 이라 한글이 깨진다.
+SET NAMES utf8mb4;
+
 SET @sid := (SELECT store_id FROM store WHERE code = @code);
 SELECT IF(@sid IS NULL, CONCAT('매장 코드를 찾을 수 없어요: ', @code), CONCAT('매장 id ', @sid)) AS info;
 
@@ -73,7 +76,9 @@ WHERE @sid IS NOT NULL
 SELECT u.name, w.kind, w.part, w.status FROM store_worker w JOIN users u ON u.user_id = w.worker_id
 WHERE w.store_id = @sid AND u.kakao_id LIKE 'test-staff-%' ORDER BY w.mapping_id;
 
--- 지우기 (근무·출근 기록이 있으면 먼저 지워야 함):
+-- 지우기 (출근 기록이 있으면 먼저 지워야 함):
+--   DELETE a FROM attendance a JOIN schedule s ON s.schedule_id = a.schedule_id JOIN store_worker w ON w.mapping_id = s.mapping_id
+--     JOIN users u ON u.user_id = w.worker_id WHERE u.kakao_id LIKE 'test-staff-%';
 --   DELETE s FROM schedule s JOIN store_worker w ON w.mapping_id = s.mapping_id
 --     JOIN users u ON u.user_id = w.worker_id WHERE u.kakao_id LIKE 'test-staff-%';
 --   DELETE w FROM store_worker w JOIN users u ON u.user_id = w.worker_id WHERE u.kakao_id LIKE 'test-staff-%';
