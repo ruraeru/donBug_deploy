@@ -1,3 +1,9 @@
 *
 !Caddyfile
-!donBug_FE/build/web
+!donBug_FE
+donBug_FE/flutter
+donBug_FE/build
+donBug_FE/.dart_tool
+donBug_FE/.git
+donBug_FE/android
+donBug_FE/ios

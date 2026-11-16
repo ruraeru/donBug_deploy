@@ -16,13 +16,12 @@
    cd donBug_deploy
    ```
 3. `cp .env.example .env` 후 값을 채운다. `JWT_SECRET` 은 `openssl rand -base64 48`. `.env` 는 커밋하지 않는다.
-4. `./deploy.sh` — Flutter 웹을 빌드하고 `docker compose up -d --build`.
-   Flutter SDK 가 필요하다 (`donBug_FE/flutter` 또는 PATH 의 `flutter`).
+4. `./deploy.sh` — 서브모듈을 받고 `docker compose up -d --build`. Flutter 웹은 Docker 안에서 빌드한다(서버에 Flutter SDK 불필요).
 
 ## 업데이트
 
 ```sh
-git pull && git submodule update --init --recursive
+git pull
 ./deploy.sh
 ```
 

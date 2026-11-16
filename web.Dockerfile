@@ -1,4 +1,19 @@
-# Flutter 웹 빌드 결과(donBug_FE/build/web)를 Caddy 로 서빙. 빌드는 deploy.sh 가 로컬 SDK 로 먼저 한다.
+# 빌드 컨텍스트: 저장소 루트. Flutter 웹을 컨테이너 안에서 빌드하므로 서버에 Flutter SDK 가 필요 없다.
+FROM debian:bookworm-slim AS build
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends git curl unzip xz-utils ca-certificates \
+ && rm -rf /var/lib/apt/lists/*
+# FE 개발에 쓰는 SDK 와 같은 버전 (donBug_FE/flutter = 3.47.9, Dart 3.13.7)
+ARG FLUTTER_VERSION=3.47.9
+RUN git clone --depth 1 --branch ${FLUTTER_VERSION} https://github.com/flutter/flutter.git /opt/flutter
+ENV PATH=/opt/flutter/bin:$PATH
+RUN flutter config --no-analytics && flutter precache --web
+WORKDIR /app
+COPY donBug_FE/pubspec.yaml donBug_FE/pubspec.lock ./
+RUN flutter pub get
+COPY donBug_FE/ ./
+RUN flutter build web --release
+
 FROM caddy:2.10-alpine
 COPY Caddyfile /etc/caddy/Caddyfile
-COPY donBug_FE/build/web /srv
+COPY --from=build /app/build/web /srv
