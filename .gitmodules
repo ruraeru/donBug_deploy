@@ -1,0 +1,7 @@
+[submodule "donBug_FE"]
+	path = donBug_FE
+	url = https://github.com/ruraeru/donBug.git
+[submodule "donBug_BE"]
+	path = donBug_BE
+	url = https://github.com/halo518/MoneyBug.git
+	branch = feat/fe-contract-json

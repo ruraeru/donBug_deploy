@@ -1,0 +1,62 @@
+name: donbug
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: web.Dockerfile
+    environment:
+      DOMAIN: ${DOMAIN:-donbug.ruraeru.xyz}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - be
+    restart: unless-stopped
+
+  be:
+    build:
+      context: ./donBug_BE
+      dockerfile: ../be.Dockerfile
+    environment:
+      DB_URL: jdbc:mysql://db:3306/moneybug?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+      DB_USERNAME: moneybug
+      DB_PASSWORD: ${DB_PASSWORD:?.env 에 DB_PASSWORD 를 넣어 주세요}
+      JWT_SECRET: ${JWT_SECRET:?.env 에 JWT_SECRET 을 넣어 주세요 (32바이트 이상)}
+      KAKAO_REST_API_KEY: ${KAKAO_REST_API_KEY:-}
+      KAKAO_CLIENT_SECRET: ${KAKAO_CLIENT_SECRET:-}
+      KAKAO_REDIRECT_URI: https://${DOMAIN:-donbug.ruraeru.xyz}/api/auth/kakao/callback
+      FRONTEND_ORIGIN: https://${DOMAIN:-donbug.ruraeru.xyz}
+      # 운영: "test_token" 개발 로그인 우회를 끈다
+      DEV_LOGIN_ENABLED: ${DEV_LOGIN_ENABLED:-false}
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  db:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: moneybug
+      MYSQL_USER: moneybug
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?.env 에 DB_ROOT_PASSWORD 를 넣어 주세요}
+      TZ: Asia/Seoul
+    command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD}"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+    restart: unless-stopped
+
+volumes:
+  caddy_data:
+  caddy_config:
+  db_data:
