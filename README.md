@@ -2,8 +2,8 @@
 
 돈벌래 웹(사장님 화면)과 백엔드를 Docker 로 `https://donbug.ruraeru.xyz` 에 배포한다.
 
-- `donBug_FE`: Flutter 앱 (submodule, github.com/ruraeru/donBug)
-- `donBug_BE`: Spring Boot 백엔드 (submodule, github.com/halo518/MoneyBug)
+- `donBug_FE`: Flutter 앱 (submodule, github.com/ruraeru/donBug `develop`)
+- `donBug_BE`: Spring Boot 백엔드 (submodule, github.com/halo518/MoneyBug `main`)
 - `web`(Caddy): Flutter 웹 정적 파일 + `/api/*` 를 백엔드로 프록시. 호스트 포트 `3004`(HTTP)
 - `be`: Spring Boot, `db`: MySQL 8.4 (볼륨 `db_data`)
 
