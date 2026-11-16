@@ -29,6 +29,12 @@ services:
       FRONTEND_URL: https://${DOMAIN:-donbug.ruraeru.xyz}
       # 운영: "test_token" 개발 로그인 우회를 끈다
       DEV_LOGIN_ENABLED: ${DEV_LOGIN_ENABLED:-false}
+      # 보건증 사진·서명 이미지 (app.upload-dir)
+      APP_UPLOADDIR: /data/uploads
+      # AI 노무 도우미. 비우면 AI 기능만 꺼진다.
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+    volumes:
+      - uploads:/data/uploads
     depends_on:
       db:
         condition: service_healthy
@@ -54,3 +60,4 @@ services:
 
 volumes:
   db_data:
+  uploads:
