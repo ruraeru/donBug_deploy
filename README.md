@@ -4,12 +4,12 @@
 
 - `donBug_FE`: Flutter 앱 (submodule, github.com/ruraeru/donBug)
 - `donBug_BE`: Spring Boot 백엔드 (submodule, github.com/halo518/MoneyBug)
-- `web`(Caddy): Flutter 웹 정적 파일 + `/api/*` 를 백엔드로 프록시, HTTPS 자동 발급
+- `web`(Caddy): Flutter 웹 정적 파일 + `/api/*` 를 백엔드로 프록시. 호스트 포트 `3004`(HTTP)
 - `be`: Spring Boot, `db`: MySQL 8.4 (볼륨 `db_data`)
 
 ## 배포
 
-1. DNS `donbug.ruraeru.xyz` 가 서버를 가리키고, 외부 80/443 이 서버로 열려 있어야 한다.
+1. 앞단 리버스 프록시에서 `https://donbug.ruraeru.xyz` 를 `http://<이 서버>:3004` 로 넘긴다 (HTTPS 인증서는 프록시가 담당).
 2. 받기:
    ```sh
    git clone --recurse-submodules https://github.com/ruraeru/donBug_deploy.git

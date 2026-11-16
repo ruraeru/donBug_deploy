@@ -5,15 +5,9 @@ services:
     build:
       context: .
       dockerfile: web.Dockerfile
-    environment:
-      DOMAIN: ${DOMAIN:-donbug.ruraeru.xyz}
     ports:
-      - "80:80"
-      - "443:443"
-      - "443:443/udp"
-    volumes:
-      - caddy_data:/data
-      - caddy_config:/config
+      # 앞단 리버스 프록시가 https://donbug.ruraeru.xyz -> http://<서버>:3004 로 넘긴다
+      - "${WEB_PORT:-3004}:80"
     depends_on:
       - be
     restart: unless-stopped
@@ -57,6 +51,4 @@ services:
     restart: unless-stopped
 
 volumes:
-  caddy_data:
-  caddy_config:
   db_data:
