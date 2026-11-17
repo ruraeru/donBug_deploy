@@ -4,8 +4,8 @@
 
 | 구성 | 내용 |
 |---|---|
-| `donBug_FE` | Flutter 앱·웹 (submodule, github.com/ruraeru/donBug, 브랜치 `deploy`) |
-| `donBug_BE` | Spring Boot 백엔드 (submodule, github.com/halo518/MoneyBug, 브랜치 `deploy`) |
+| `donBug_FE` | Flutter 앱·웹 (submodule, github.com/ruraeru/donBug, 브랜치 `deploy`. 이 레포 `develop` 에서는 `develop`) |
+| `donBug_BE` | Spring Boot 백엔드 (submodule, github.com/halo518/MoneyBug, 브랜치 `deploy`. 이 레포 `develop` 에서는 `develop`) |
 | `web` (Caddy) | Flutter 웹 정적 파일 + `/api/*` 를 백엔드로 프록시. 호스트 포트 `3004` (HTTP) |
 | `be` | Spring Boot (Java 17). 업로드 파일은 볼륨 `uploads` (`/data/uploads`) |
 | `db` | MySQL 8.4 (볼륨 `db_data`) |
@@ -42,19 +42,19 @@
 
 ## 업데이트 (새 버전 배포)
 
-배포되는 코드는 FE·BE 각 레포의 `deploy` 브랜치이고, 이 레포는 그 브랜치의 특정 커밋을 가리킨다.
+브랜치는 세 레포 모두 고정이다. FE·BE: `develop`·`main`·`deploy`. 이 레포: `main`(submodule 이 FE·BE `deploy` 를 따라감, 운영)·`develop`(FE·BE `develop` 을 따라감, 테스트 배포). 기능 브랜치는 머지 뒤 지운다.
 
-1. FE·BE 에서 기능 브랜치 → PR → 머지 (FE: `develop`, BE: `main`).
-2. 배포할 커밋을 각 레포의 `deploy` 브랜치로 올린다 (PR `develop → deploy`, `main → deploy` 또는 fast-forward).
-3. 이 레포에서 포인터를 올린다.
+1. FE·BE 에서 기능 브랜치 → `develop` PR → 머지(merge commit).
+2. 테스트 배포: 이 레포 `develop` 에서 포인터를 올린다.
    ```sh
-   git submodule update --remote donBug_FE donBug_BE
-   git add donBug_FE donBug_BE && git commit -m "chore: bump FE/BE" && git push
+   git checkout develop && git submodule update --remote donBug_FE donBug_BE
+   git add donBug_FE donBug_BE && git commit -m "chore: bump FE/BE develop" && git push
    ```
-4. 서버에서
-   ```sh
-   cd ~/donBug_deploy && git pull && ./deploy.sh
-   ```
+   서버: `git checkout develop && git pull && git submodule sync && git submodule update --init && ./deploy.sh`
+3. 운영 배포: FE·BE 에서 PR `develop → main` → `main → deploy` 머지 후, 이 레포 `main` 에서 같은 방식으로 포인터를 올린다.
+   서버: `git checkout main && git pull && git submodule sync && git submodule update --init && ./deploy.sh`
+
+`.gitmodules` 의 `branch` 는 두 브랜치가 다르다(`main`=`deploy`, `develop`=`develop`). 그래서 이 레포의 `develop` 을 `main` 에 머지하지 않는다. 설정·문서 변경은 `main` 에 커밋하고 `develop` 에 cherry-pick 한다. 서버에서 브랜치를 바꾼 뒤에는 `git submodule sync` 가 필요하다.
 
 ## 모바일 앱 (iPhone)
 

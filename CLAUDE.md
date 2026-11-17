@@ -6,11 +6,14 @@
 
 | 레포 | 원격 | 작업 브랜치 | 배포 브랜치 |
 |---|---|---|---|
-| 이 레포 | github.com/ruraeru/donBug_deploy (공개) | `main` 에 직접 커밋·push | — |
+| 이 레포 | github.com/ruraeru/donBug_deploy (공개) | `main`·`develop` 에 직접 커밋·push | — |
 | FE | github.com/ruraeru/donBug | 기능 브랜치 → `develop` PR → `main` PR | `deploy` |
-| BE | github.com/halo518/MoneyBug (다른 계정, push·머지 권한 있음) | 기능 브랜치 → `main` PR | `deploy` |
+| BE | github.com/halo518/MoneyBug (다른 계정, push·머지 권한 있음) | 기능 브랜치 → `develop` PR → `main` PR | `deploy` |
 
-- `.gitmodules` 는 두 submodule 모두 `branch = deploy`. 배포 = `deploy` 브랜치 갱신 → 이 레포에서 `git submodule update --remote` → 포인터 커밋·push → 서버 `git pull && ./deploy.sh`.
+- 남기는 브랜치는 FE·BE `develop`·`main`·`deploy`, 이 레포 `main`·`develop` 뿐이다. 기능 브랜치는 머지 뒤 지운다(`gh pr merge --merge --delete-branch`).
+- 이 레포 `main` 은 `.gitmodules` 가 `branch = deploy`(운영), `develop` 은 `branch = develop`(테스트 배포). 둘은 서로 머지하지 않는다. 설정·문서는 `main` 에 커밋하고 `develop` 에 cherry-pick.
+- 테스트 배포 = FE·BE `develop` 머지 → 이 레포 `develop` 에서 `git submodule update --remote` → 포인터 커밋·push → 서버 `git checkout develop && git pull && git submodule sync && git submodule update --init && ./deploy.sh`.
+- 운영 배포 = FE·BE PR `develop → main` → `main → deploy` → 이 레포 `main` 포인터 커밋·push → 서버에서 `main` 으로 같은 명령.
 - PR 은 merge commit 으로 머지. 커밋·PR 끝에 Claude attribution 을 붙인다.
 - 배포 서버는 이 작업 환경과 **다른 호스트**(`ruraeru@docker:~/donBug_deploy`). 이 환경에서는 docker 명령 권한이 없고 운영 DB 에도 접근할 수 없다. 서버 작업은 사용자가 직접 실행하도록 명령을 준다(파일이 필요하면 이 레포에 커밋·push 해서 `git pull` 로 받게 한다).
 - 자동 모드 분류기가 사용자 명시 없이 하는 PR 생성·머지·push 를 막을 수 있다. 사용자가 "PR 올리고 머지한 다음 배포 레포 포인터 올려줘" 라고 하면 그대로 진행한다.
