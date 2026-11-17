@@ -198,7 +198,7 @@
 | [08 schedule-autofill](reports/08-schedule-autofill.md) | 89 | 0 | 1 | 4 | 5 |
 | [09 schedule-templates](reports/09-schedule-templates.md) | 52 | 0 | 0 | 4 | 3 |
 | [10 ai-features](reports/10-ai-features.md) | 62 | 0 | 0 | 2 | 5 |
-| [11 qr-clock-in](reports/11-qr-clock-in.md) | 보고서 참고 | 0 | 0 | 0 | 3 |
+| [11 qr-clock-in](reports/11-qr-clock-in.md) | 61 | 0 | 0 | 0 | 3 |
 | [12 attendance](reports/12-attendance.md) | 68 | 0 | 0 | 5 | 3 |
 | [13 substitute](reports/13-substitute.md) | 88 | 0 | 1 | 2 | 6 |
 | [14 notices](reports/14-notices.md) | 76 | 0 | 0 | 1 | 6 |
