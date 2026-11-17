@@ -13,7 +13,7 @@
 SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 SET @sid := (SELECT store_id FROM store WHERE code = CONVERT(@code USING utf8mb4) COLLATE utf8mb4_unicode_ci);
-SELECT IF(@sid IS NULL, CONCAT('매장 코드를 찾을 수 없어요: ', @code), CONCAT('매장 id ', @sid)) AS info;
+SELECT IF(@sid IS NULL, CONCAT('매장 코드를 찾을 수 없어요: ', CONVERT(@code USING utf8mb4)), CONCAT('매장 id ', @sid)) AS info;
 
 -- 영업시간 08:00~23:00(주말 같음), 사업장 규모 5인 이상
 UPDATE store SET open_min = 480, close_min = 1380, weekend_open_min = 480, weekend_close_min = 1380,
