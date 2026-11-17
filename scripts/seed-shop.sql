@@ -42,7 +42,7 @@ INSERT IGNORE INTO users (kakao_id, name, full_name, phone_consent) VALUES
   ('shop-staff-07', '주말오픈A', '주말오픈A', FALSE),
   ('shop-staff-08', '주말오픈B', '주말오픈B', FALSE),
   ('shop-staff-09', '주말미들', '주말미들', FALSE),
-  ('shop-staff-10', '주말마감', '주말마감', FALSE),
+  ('shop-staff-10', '주말마감', '주말마감', FALSE);
 
 SET @mgr := '[{"startMin":480,"endMin":1020},{"startMin":480,"endMin":1020},{"startMin":480,"endMin":1020},{"startMin":480,"endMin":1020},{"startMin":480,"endMin":1020},null,null]';
 
