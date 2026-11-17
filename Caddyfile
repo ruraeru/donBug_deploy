@@ -3,6 +3,20 @@
 :80 {
 	encode zstd gzip
 
+	header {
+		X-Content-Type-Options nosniff
+		Referrer-Policy strict-origin-when-cross-origin
+		X-Frame-Options DENY
+		Content-Security-Policy "frame-ancestors 'none'"
+	}
+
+	# 해시 없는 진입 파일(index.html, main.dart.js, flutter_service_worker.js, version.json 등)은
+	# 매번 재검증(ETag → 304)해서 배포 직후 옛 앱이 남지 않게 한다. 정적 리소스 폴더만 캐시 허용.
+	@entry not path /api/* /assets/* /canvaskit/* /icons/*
+	header @entry Cache-Control "no-cache"
+	@static path /assets/* /canvaskit/* /icons/*
+	header @static Cache-Control "public, max-age=3600"
+
 	handle /api/* {
 		reverse_proxy be:8080
 	}
