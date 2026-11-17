@@ -9,7 +9,7 @@
 SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 SET @sid := (SELECT store_id FROM store WHERE code = CONVERT(@code USING utf8mb4) COLLATE utf8mb4_unicode_ci);
-SELECT IF(@sid IS NULL, CONCAT('매장 코드를 찾을 수 없어요: ', @code), CONCAT('매장 id ', @sid)) AS info;
+SELECT IF(@sid IS NULL, CONCAT('매장 코드를 찾을 수 없어요: ', CONVERT(@code USING utf8mb4)), CONCAT('매장 id ', @sid)) AS info;
 
 -- 매장 파트를 시작 시각 순으로 (기본: 오픈 · 미들 · 마감)
 SET @p1 := (SELECT name FROM store_part WHERE store_id = @sid ORDER BY start_min LIMIT 1);
