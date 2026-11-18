@@ -1,8 +1,8 @@
 [submodule "donBug_FE"]
 	path = donBug_FE
 	url = https://github.com/ruraeru/donBug.git
-	branch = develop
+	branch = feat/staff-parts
 [submodule "donBug_BE"]
 	path = donBug_BE
 	url = https://github.com/halo518/MoneyBug.git
-	branch = develop
+	branch = feat/staff-parts
