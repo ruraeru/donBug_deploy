@@ -1,4 +1,4 @@
--- 매장 설정(영업 08~23시, 오픈·미들·마감) + 매니저 1명 + 알바 10명. 여러 번 실행해도 중복으로 들어가지 않는다.
+-- 매장 설정(영업 08~23시, 오픈·미들·마감) + 매니저 1명 + 알바 12명. 여러 번 실행해도 중복으로 들어가지 않는다.
 -- 실행 (매장 코드를 바꿔서):
 --   (echo "SET @code='ABCD-EFGH';"; cat scripts/seed-shop.sql) \
 --     | sudo docker compose exec -T db sh -c 'mysql -uroot -p"$MYSQL_ROOT_PASSWORD" moneybug'
@@ -7,7 +7,7 @@
 -- 배치 (fixed_parts 는 월~일 순)
 --   월화조   : 오픈 1 · 미들 1 · 마감 1 (월·화)
 --   수목금조 : 오픈 1 · 미들 1 · 마감 1 (수·목·금)
---   토일조   : 오픈 2 · 미들 1 · 마감 1 (토·일)
+--   토일조   : 오픈 2 · 미들 2 · 마감 2 (토·일)
 --   매니저   : 월~금 08~17시
 
 SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -20,7 +20,7 @@ UPDATE store SET open_min = 480, close_min = 1380, weekend_open_min = 480, weeke
                  size_mode = 'OVER5', is_under_5 = FALSE
 WHERE store_id = @sid;
 
--- 파트. 필요 인원은 요일 구분이 없어 오픈도 1명; 주말 오픈 2명째는 고정 파트로 넣는다.
+-- 파트. 필요 인원은 요일 구분이 없어 모두 1명; 주말 2명째는 고정 파트로 넣는다.
 INSERT INTO store_part (store_id, name, start_min, end_min, tone, break_min, need)
 SELECT @sid, t.name, t.s, t.e, t.tone, 30, 1
 FROM (SELECT '오픈' AS name, 480 AS s, 780 AS e, 'OPEN' AS tone
@@ -42,7 +42,9 @@ INSERT IGNORE INTO users (kakao_id, name, full_name, phone_consent) VALUES
   ('shop-staff-07', '주말오픈A', '주말오픈A', FALSE),
   ('shop-staff-08', '주말오픈B', '주말오픈B', FALSE),
   ('shop-staff-09', '주말미들', '주말미들', FALSE),
-  ('shop-staff-10', '주말마감', '주말마감', FALSE);
+  ('shop-staff-10', '주말마감', '주말마감', FALSE),
+  ('shop-staff-11', '주말미들B', '주말미들B', FALSE),
+  ('shop-staff-12', '주말마감B', '주말마감B', FALSE);
 
 SET @mgr := '[{"startMin":480,"endMin":1020},{"startMin":480,"endMin":1020},{"startMin":480,"endMin":1020},{"startMin":480,"endMin":1020},{"startMin":480,"endMin":1020},null,null]';
 
@@ -63,6 +65,8 @@ FROM (
   UNION ALL SELECT 'shop-staff-08', 10320, '오픈', 'PART_TIMER', 'INFO',    '[[],[],[],[],[],["오픈"],["오픈"]]', NULL
   UNION ALL SELECT 'shop-staff-09', 10320, '미들', 'PART_TIMER', 'PRIMARY', '[[],[],[],[],[],["미들"],["미들"]]', NULL
   UNION ALL SELECT 'shop-staff-10', 10320, '마감', 'PART_TIMER', 'DANGER',  '[[],[],[],[],[],["마감"],["마감"]]', NULL
+  UNION ALL SELECT 'shop-staff-11', 10320, '미들', 'PART_TIMER', 'INFO',    '[[],[],[],[],[],["미들"],["미들"]]', NULL
+  UNION ALL SELECT 'shop-staff-12', 10320, '마감', 'PART_TIMER', 'ACCENT',  '[[],[],[],[],[],["마감"],["마감"]]', NULL
 ) t
 JOIN users u ON u.kakao_id = t.kid
 WHERE @sid IS NOT NULL
