@@ -31,20 +31,22 @@ ON DUPLICATE KEY UPDATE start_min = VALUES(start_min), end_min = VALUES(end_min)
                         break_min = VALUES(break_min), need = VALUES(need);
 
 -- 테스트 계정 (카카오 로그인 불가: kakao_id 가 실제 카카오 id 가 아님)
-INSERT IGNORE INTO users (kakao_id, name, full_name, phone_consent) VALUES
-  ('shop-staff-00', '김매니저', '김매니저', FALSE),
-  ('shop-staff-01', '월화오픈', '월화오픈', FALSE),
-  ('shop-staff-02', '월화미들', '월화미들', FALSE),
-  ('shop-staff-03', '월화마감', '월화마감', FALSE),
-  ('shop-staff-04', '수목금오픈', '수목금오픈', FALSE),
-  ('shop-staff-05', '수목금미들', '수목금미들', FALSE),
-  ('shop-staff-06', '수목금마감', '수목금마감', FALSE),
-  ('shop-staff-07', '주말오픈A', '주말오픈A', FALSE),
-  ('shop-staff-08', '주말오픈B', '주말오픈B', FALSE),
-  ('shop-staff-09', '주말미들', '주말미들', FALSE),
-  ('shop-staff-10', '주말마감', '주말마감', FALSE),
-  ('shop-staff-11', '주말미들B', '주말미들B', FALSE),
-  ('shop-staff-12', '주말마감B', '주말마감B', FALSE);
+-- 이름은 '이름(파트)' 형식. 이미 넣은 계정도 다시 실행하면 이 이름으로 바뀐다.
+INSERT INTO users (kakao_id, name, full_name, phone_consent) VALUES
+  ('shop-staff-00', '김도현(매니저)', '김도현(매니저)', FALSE),
+  ('shop-staff-01', '이서준(월화 오픈)', '이서준(월화 오픈)', FALSE),
+  ('shop-staff-02', '박하은(월화 미들)', '박하은(월화 미들)', FALSE),
+  ('shop-staff-03', '최지우(월화 마감)', '최지우(월화 마감)', FALSE),
+  ('shop-staff-04', '정민준(수목금 오픈)', '정민준(수목금 오픈)', FALSE),
+  ('shop-staff-05', '강서윤(수목금 미들)', '강서윤(수목금 미들)', FALSE),
+  ('shop-staff-06', '조예준(수목금 마감)', '조예준(수목금 마감)', FALSE),
+  ('shop-staff-07', '윤지호(주말 오픈)', '윤지호(주말 오픈)', FALSE),
+  ('shop-staff-08', '장수아(주말 오픈)', '장수아(주말 오픈)', FALSE),
+  ('shop-staff-09', '임시우(주말 미들)', '임시우(주말 미들)', FALSE),
+  ('shop-staff-10', '한다은(주말 마감)', '한다은(주말 마감)', FALSE),
+  ('shop-staff-11', '오유준(주말 미들)', '오유준(주말 미들)', FALSE),
+  ('shop-staff-12', '신채원(주말 마감)', '신채원(주말 마감)', FALSE)
+ON DUPLICATE KEY UPDATE name = VALUES(name), full_name = VALUES(full_name);
 
 SET @mgr := '[{"startMin":480,"endMin":1020},{"startMin":480,"endMin":1020},{"startMin":480,"endMin":1020},{"startMin":480,"endMin":1020},{"startMin":480,"endMin":1020},null,null]';
 
