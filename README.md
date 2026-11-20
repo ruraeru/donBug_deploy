@@ -37,8 +37,7 @@
 | `DEV_LOGIN_ENABLED` | | 운영은 `false`(기본). `true` 면 누구나 `test_token` 으로 로그인되니 켜지 말 것 |
 | `SWAGGER_ENABLED` | | 기본 꺼짐. `true` 면 BE 의 Swagger UI·`/v3/api-docs` 가 열린다 (Caddy 는 `/api/*` 만 넘기므로 외부에서는 어차피 안 보임) |
 | `TEST_LOGIN_TOKEN` | | 16자 이상 비밀값. 로그인 화면 로고를 길게 눌러 이 값을 넣으면 "테스트알바" 계정. 비우면 꺼짐. `openssl rand -hex 24` |
-| `ANTHROPIC_API_KEY` | | AI 노무 도우미(Claude). 비우면 그 기능만 꺼짐 |
-| `LLM_BASE_URL`, `LLM_MODEL`, `LLM_API_KEY` | | AI 근무표 생성(Ollama 호환). 기본 `https://ai.ruraeru.xyz`, `qwen3.5:9b` |
+| `LLM_BASE_URL`, `LLM_MODEL`, `LLM_API_KEY` | | AI 근무표 생성·AI 노무 도우미(Ollama 호환). 기본 `https://ai.ruraeru.xyz`, `qwen3.5:9b` |
 
 ## 업데이트 (새 버전 배포)
 

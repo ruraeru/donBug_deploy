@@ -32,7 +32,7 @@
 2. **배포**: 이 레포, Caddy + BE + MySQL, 포트 3004.
 3. **FE↔BE 연결**: `ApiClient`(토큰·refresh), `AppStore` 는 액션 후 `_remote` → `/me/state` reload. 웹 `WebBoot`(카카오 리다이렉트 로그인 → 매장 만들기 → 대시보드).
 4. **모바일 서버 모드**: 앱 카카오 로그인은 `flutter_web_auth_2` 로 서버 OAuth → `donbug://auth` 로 토큰. `MobileBoot`/`enterApp` 이 상태로 첫 화면 결정.
-5. **데모 제거·실제 연동**: 서버 모드가 기본(`--dart-define=DEMO=true` 면 데모). QR 출근(30초 회전 HMAC 토큰, 웹 POS 표시 + 앱 카메라 스캔, 출근 시 필수), 보건증 사진·서명 이미지 업로드, AI 노무 도우미(Anthropic, `ANTHROPIC_API_KEY`).
+5. **데모 제거·실제 연동**: 서버 모드가 기본(`--dart-define=DEMO=true` 면 데모). QR 출근(30초 회전 HMAC 토큰, 웹 POS 표시 + 앱 카메라 스캔, 출근 시 필수), 보건증 사진·서명 이미지 업로드, AI 노무 도우미(근무표와 같은 Ollama 서버 `LLM_*`, 매장 데이터 맥락·노무 점검·알바생 사용).
 6. **테스트 계정**: `TEST_LOGIN_TOKEN`(비밀, 16자+) → 로그인 화면 로고 길게 누르기(앱·웹). 운영에서 공개 우회 `test_token` 은 끔.
 7. **웹 모바일 화면**: 폭 700 미만이면 웹에서도 모바일 앱 화면, 알바생은 웹에서 항상 모바일 화면. 사장님은 "모바일 화면 / PC 화면으로" 전환. 빈 곳 탭하면 키보드 내림.
 8. **근무표 개편 (autoSchedule_FE 이식)**: 매장 설정(영업시간·사업장 규모·파트 CRUD), 직원 고정 파트·요일별 근무시간, 월 근무표(작성 중/확정·출처), 편집기 초안 모드(되돌리기·저장), 이름 있는 주간 템플릿, AI 근무표 생성(Ollama `ai.ruraeru.xyz` qwen, 백그라운드 job, 알바는 고정 파트·직원만 AI). 레퍼런스: github.com/ruraeru/autoSchedule_FE.
