@@ -39,9 +39,7 @@ services:
       DEV_LOGIN_ENABLED: ${DEV_LOGIN_ENABLED:-false}
       # 보건증 사진·서명 이미지 (app.upload-dir)
       APP_UPLOADDIR: /data/uploads
-      # AI 노무 도우미. 비우면 AI 기능만 꺼진다.
-      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
-      # AI 근무표 생성 (Ollama 호환 서버)
+      # AI 근무표 생성·AI 노무 도우미 (Ollama 호환 서버)
       LLM_BASE_URL: ${LLM_BASE_URL:-https://ai.ruraeru.xyz}
       LLM_MODEL: ${LLM_MODEL:-qwen3.5:9b}
       LLM_API_KEY: ${LLM_API_KEY:-}
